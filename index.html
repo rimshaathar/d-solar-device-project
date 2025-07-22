@@ -508,7 +508,7 @@
         }
 
         .notification {
-            position: absolute;
+            position: fixed;
             top: 25px;
             left: 50%;
             transform: translateX(-50%);
@@ -517,29 +517,40 @@
             padding: 15px 45px 15px 25px;
             border-radius: 10px;
             font-weight: bold;
-            z-index: 1000;
+            z-index: 9999;
             box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
-            animation: slideDown 0.5s ease-out;
             border: 1px solid rgba(255,255,255,0.2);
-            position: relative;
+            display: none;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .notification.show {
+            display: block;
         }
 
         .notification-close {
             position: absolute;
-            top: 8px;
-            right: 12px;
+            top: 5px;
+            right: 10px;
             background: none;
             border: none;
             color: white;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
             cursor: pointer;
-            opacity: 0.7;
-            transition: opacity 0.3s ease;
+            opacity: 0.8;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .notification-close:hover {
             opacity: 1;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
         }
 
         .notification.warning {
@@ -627,8 +638,8 @@
 </head>
 <body>
     <div class="notification" id="notification">
-        ✅ Advanced Solar Device System v2.0 Online!
-        <button class="notification-close" onclick="hideNotification()">&times;</button>
+        <span id="notification-text">✅ Advanced Solar Device System v2.0 Online!</span>
+        <button class="notification-close" onclick="closeNotification()">&times;</button>
     </div>
 
     <div class="header">
