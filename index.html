@@ -514,13 +514,32 @@
             transform: translateX(-50%);
             background: linear-gradient(135deg, #10b981, #34d399);
             color: white;
-            padding: 15px 25px;
+            padding: 15px 45px 15px 25px;
             border-radius: 10px;
             font-weight: bold;
             z-index: 1000;
             box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
             animation: slideDown 0.5s ease-out;
             border: 1px solid rgba(255,255,255,0.2);
+            position: relative;
+        }
+
+        .notification-close {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .notification-close:hover {
+            opacity: 1;
         }
 
         .notification.warning {
@@ -609,6 +628,7 @@
 <body>
     <div class="notification" id="notification">
         ✅ Advanced Solar Device System v2.0 Online!
+        <button class="notification-close" onclick="hideNotification()">&times;</button>
     </div>
 
     <div class="header">
