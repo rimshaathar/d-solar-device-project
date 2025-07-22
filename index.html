@@ -1,137 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Solar Device System</title>
+    <title>Solar Device System</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            background: linear-gradient(135deg, #0f172a, #1e293b, #334155);
-            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            background-color: #1a1a2e;
             color: white;
-            height: 100vh;
-            overflow: hidden;
+            font-family: Arial, sans-serif;
         }
-
-        .device-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 400px;
-            height: 300px;
-            perspective: 1000px;
+        
+        .header {
+            background-color: #16213e;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid #0f3460;
         }
-
-        .device {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transform-style: preserve-3d;
-            animation: rotate 10s linear infinite;
-        }
-
-        .device.paused {
-            animation-play-state: paused;
-        }
-
-        @keyframes rotate {
-            from { transform: rotateY(0deg) rotateX(15deg); }
-            to { transform: rotateY(360deg) rotateX(15deg); }
-        }
-
-        .device-face {
-            position: absolute;
-            border: 2px solid #60a5fa;
-            border-radius: 15px;
+        
+        .main-container {
             display: flex;
-            flex-direction: column;
+            height: calc(100vh - 100px);
+        }
+        
+        .device-area {
+            flex: 1;
+            display: flex;
             justify-content: center;
             align-items: center;
-            font-weight: bold;
+            background: linear-gradient(135deg, #0f3460, #16213e, #1a1a2e);
         }
-
-        .front {
-            width: 400px;
-            height: 300px;
-            background: linear-gradient(145deg, #e5e7eb, #d1d5db);
-            color: #1f2937;
-            transform: translateZ(75px);
+        
+        .device {
+            width: 300px;
+            height: 200px;
+            background: linear-gradient(145deg, #e0e0e0, #c0c0c0);
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 3px solid #333;
         }
-
-        .back {
-            width: 400px;
-            height: 300px;
-            background: linear-gradient(145deg, #374151, #4b5563);
-            transform: translateZ(-75px) rotateY(180deg);
-        }
-
-        .left {
-            width: 150px;
-            height: 300px;
-            background: linear-gradient(145deg, #6b7280, #9ca3af);
-            transform: rotateY(-90deg) translateZ(75px);
-        }
-
-        .right {
-            width: 150px;
-            height: 300px;
-            background: linear-gradient(145deg, #6b7280, #9ca3af);
-            transform: rotateY(90deg) translateZ(325px);
-        }
-
-        .top {
-            width: 400px;
-            height: 150px;
-            background: linear-gradient(145deg, #1a1a2e, #16213e);
-            transform: rotateX(90deg) translateZ(150px);
-        }
-
-        .bottom {
-            width: 400px;
-            height: 150px;
-            background: linear-gradient(145deg, #4b5563, #6b7280);
-            transform: rotateX(-90deg) translateZ(150px);
-        }
-
+        
         .solar-panel {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            right: 20px;
-            height: 40px;
-            background: linear-gradient(45deg, #1a1a2e, #16213e);
-            border-radius: 8px;
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 2px;
-            padding: 4px;
+            top: 10px;
+            left: 15px;
+            right: 15px;
+            height: 30px;
+            background: #1a1a2e;
+            border-radius: 5px;
+            display: flex;
+            gap: 3px;
+            padding: 3px;
         }
-
+        
         .solar-cell {
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            flex: 1;
+            background: #2563eb;
             border-radius: 2px;
-            animation: shimmer 3s ease-in-out infinite;
+            animation: glow 2s ease-in-out infinite alternate;
         }
-
-        @keyframes shimmer {
-            0%, 100% { opacity: 0.8; }
-            50% { opacity: 1; box-shadow: 0 0 10px rgba(37, 99, 235, 0.5); }
+        
+        @keyframes glow {
+            from { box-shadow: 0 0 5px #2563eb; }
+            to { box-shadow: 0 0 15px #60a5fa; }
         }
-
+        
         .display {
             position: absolute;
-            top: 80px;
-            left: 30px;
-            width: 120px;
-            height: 80px;
-            background: #000;
+            top: 50px;
+            left: 20px;
+            width: 100px;
+            height: 70px;
+            background: black;
             border-radius: 8px;
             border: 2px solid #333;
             display: flex;
@@ -139,307 +79,196 @@
             justify-content: center;
             align-items: center;
             color: #00ff88;
-            font-family: 'Courier New', monospace;
             font-size: 10px;
+            font-family: monospace;
         }
-
+        
         .scanner {
-            width: 40px;
-            height: 40px;
+            width: 30px;
+            height: 30px;
             border: 2px solid #00ff88;
             border-radius: 50%;
-            position: relative;
-            animation: scan 2s linear infinite;
+            margin-top: 5px;
+            animation: spin 2s linear infinite;
         }
-
-        @keyframes scan {
+        
+        @keyframes spin {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
-
-        .scanner::before {
-            content: '';
+        
+        .led {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 2px;
-            height: 18px;
-            background: #00ff88;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 8px #00ff88;
-        }
-
-        .status-led {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        .led-power {
-            top: 80px;
-            right: 30px;
-            background: #10b981;
-            box-shadow: 0 0 10px #10b981;
-        }
-
-        .led-wifi {
-            top: 100px;
-            right: 30px;
-            background: #3b82f6;
-            box-shadow: 0 0 10px #3b82f6;
-        }
-
-        .led-solar {
-            top: 120px;
-            right: 30px;
-            background: #f59e0b;
-            box-shadow: 0 0 10px #f59e0b;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.6; }
-            50% { opacity: 1; }
-        }
-
-        .antenna {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            width: 3px;
-            height: 30px;
-            background: linear-gradient(to top, #666, #999);
-            border-radius: 2px;
-        }
-
-        .antenna::before {
-            content: '';
-            position: absolute;
-            top: -8px;
-            left: -4px;
-            width: 11px;
-            height: 8px;
-            background: #4ade80;
-            border-radius: 50%;
-            box-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
-            animation: pulse 2s infinite;
-        }
-
-        .feeder {
-            position: absolute;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 40px;
-            background: linear-gradient(145deg, #f97316, #ea580c);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            box-shadow: 0 4px 8px rgba(249, 115, 22, 0.3);
-        }
-
-        .control-panel {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            width: 280px;
-            z-index: 100;
-        }
-
-        .panel-title {
-            color: #60a5fa;
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            text-align: center;
-            border-bottom: 1px solid rgba(59, 130, 246, 0.3);
-            padding-bottom: 10px;
-        }
-
-        .section {
-            margin-bottom: 20px;
-        }
-
-        .section-title {
-            color: #94a3b8;
-            font-size: 12px;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .control-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            margin-bottom: 15px;
-        }
-
-        .control-btn {
-            padding: 12px 8px;
-            background: linear-gradient(145deg, #1e293b, #334155);
-            border: 1px solid #475569;
-            border-radius: 8px;
-            color: white;
-            font-size: 11px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        .control-btn:hover {
-            background: linear-gradient(145deg, #334155, #475569);
-            border-color: #60a5fa;
-            transform: translateY(-1px);
-        }
-
-        .control-btn.active {
-            background: linear-gradient(145deg, #1d4ed8, #2563eb);
-            border-color: #3b82f6;
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
-        }
-
-        .status-display {
-            background: rgba(30, 41, 59, 0.8);
-            border-radius: 8px;
-            padding: 15px;
-            border: 1px solid #374151;
-        }
-
-        .status-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-            font-size: 12px;
-        }
-
-        .status-indicator {
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: #10b981;
-            box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
-            animation: pulse 2s infinite;
+            animation: pulse 1.5s ease-in-out infinite;
         }
-
-        .status-indicator.warning {
-            background: #f59e0b;
-            box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
-        }
-
-        .status-indicator.error {
-            background: #ef4444;
-            box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
-        }
-
-        .info-panel {
-            position: absolute;
-            bottom: 20px;
+        
+        .led-power {
+            top: 60px;
             right: 20px;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            width: 250px;
-            z-index: 100;
+            background: #10b981;
         }
-
-        .camera-controls {
+        
+        .led-wifi {
+            top: 80px;
+            right: 20px;
+            background: #3b82f6;
+        }
+        
+        .led-status {
+            top: 100px;
+            right: 20px;
+            background: #f59e0b;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        .feeder {
             position: absolute;
-            top: 50%;
-            left: 10px;
-            transform: translateY(-50%);
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .camera-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: rgba(15, 23, 42, 0.9);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            color: white;
-            cursor: pointer;
+            bottom: 15px;
+            right: 20px;
+            width: 40px;
+            height: 30px;
+            background: #f97316;
+            border-radius: 5px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
-            transition: all 0.3s ease;
-        }
-
-        .camera-btn:hover {
-            background: rgba(59, 130, 246, 0.3);
-            transform: scale(1.1);
-        }
-
-        .notification {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, #059669, #10b981);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            opacity: 0;
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-
-        .notification.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(10px);
-        }
-
-        .notification.warning {
-            background: linear-gradient(135deg, #d97706, #f59e0b);
-        }
-
-        .startup-message {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, #059669, #10b981);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 10px;
             font-size: 16px;
+        }
+        
+        .antenna {
+            position: absolute;
+            top: 5px;
+            right: 50px;
+            width: 2px;
+            height: 25px;
+            background: #666;
+        }
+        
+        .antenna::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -3px;
+            width: 8px;
+            height: 5px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        .controls {
+            width: 300px;
+            background: #16213e;
+            padding: 20px;
+            border-left: 2px solid #0f3460;
+        }
+        
+        .control-section {
+            margin-bottom: 25px;
+        }
+        
+        .control-title {
+            color: #60a5fa;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #0f3460;
+            padding-bottom: 5px;
+        }
+        
+        .button-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .control-button {
+            padding: 10px;
+            background: #1a1a2e;
+            color: white;
+            border: 1px solid #333;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+        
+        .control-button:hover {
+            background: #2563eb;
+            border-color: #60a5fa;
+        }
+        
+        .control-button.active {
+            background: #10b981;
+            border-color: #34d399;
+        }
+        
+        .status-info {
+            background: #1a1a2e;
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid #333;
+        }
+        
+        .status-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+        
+        .status-value {
+            color: #60a5fa;
+            font-weight: bold;
+        }
+        
+        .info-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(22, 33, 62, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #0f3460;
+            min-width: 200px;
+        }
+        
+        .success-message {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #10b981;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
             font-weight: bold;
             z-index: 1000;
-            animation: slideDown 0.5s ease-out;
-        }
-
-        @keyframes slideDown {
-            from { transform: translateX(-50%) translateY(-100px); opacity: 0; }
-            to { transform: translateX(-50%) translateY(0); opacity: 1; }
         }
     </style>
 </head>
 <body>
-    <div class="startup-message" id="startup-message">
-        ✅ 3D Solar Device System Online!
+    <div class="success-message">
+        ✅ Solar Device System Online!
     </div>
 
-    <div class="notification" id="notification"></div>
+    <div class="header">
+        <h1>🌟 Advanced Solar IoT Device System</h1>
+        <p>Real-time monitoring and control interface</p>
+    </div>
 
-    <!-- 3D Device -->
-    <div class="device-container">
-        <div class="device" id="device">
-            <div class="device-face front">
+    <div class="main-container">
+        <div class="device-area">
+            <div class="device">
+                <!-- Solar Panel -->
                 <div class="solar-panel">
                     <div class="solar-cell"></div>
                     <div class="solar-cell"></div>
@@ -449,141 +278,109 @@
                     <div class="solar-cell"></div>
                 </div>
                 
+                <!-- Antenna -->
                 <div class="antenna"></div>
                 
+                <!-- Display Screen -->
                 <div class="display">
-                    <div style="margin-bottom: 5px; font-weight: bold;">AI VISION</div>
+                    <div>AI VISION</div>
                     <div class="scanner" id="scanner"></div>
                 </div>
                 
-                <div class="status-led led-power" id="led-power"></div>
-                <div class="status-led led-wifi" id="led-wifi"></div>
-                <div class="status-led led-solar" id="led-solar"></div>
+                <!-- Status LEDs -->
+                <div class="led led-power" id="led-power"></div>
+                <div class="led led-wifi" id="led-wifi"></div>
+                <div class="led led-status" id="led-status"></div>
                 
+                <!-- Feeder -->
                 <div class="feeder">🥄</div>
                 
-                <div style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.8); color: white; padding: 5px 15px; border-radius: 15px; font-size: 10px; font-weight: bold;">
+                <!-- Device Label -->
+                <div style="position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.8); color: white; padding: 3px 10px; border-radius: 10px; font-size: 10px;">
                     SMART ENTRY
                 </div>
             </div>
-            
-            <div class="device-face back">
-                <div style="font-size: 14px; text-align: center;">
-                    <div style="margin-bottom: 20px;">🔧 MAINTENANCE PANEL</div>
-                    <div style="font-size: 12px; line-height: 1.5;">
-                        <div>Serial: SS-2025-AI-001</div>
-                        <div>Model: SolarSmart Pro V3.2</div>
-                        <div>Firmware: v2.1.4</div>
+        </div>
+
+        <div class="controls">
+            <div class="control-section">
+                <div class="control-title">🔧 System Controls</div>
+                <div class="button-grid">
+                    <button class="control-button active" onclick="toggle('power', this)">
+                        ⚡ Power
+                    </button>
+                    <button class="control-button active" onclick="toggle('solar', this)">
+                        ☀️ Solar
+                    </button>
+                    <button class="control-button active" onclick="toggle('wifi', this)">
+                        📶 WiFi
+                    </button>
+                    <button class="control-button active" onclick="toggle('scan', this)">
+                        🔍 AI Scan
+                    </button>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <div class="control-title">📊 System Status</div>
+                <div class="status-info">
+                    <div class="status-row">
+                        <span>Power Status:</span>
+                        <span class="status-value" id="power-status">Online</span>
+                    </div>
+                    <div class="status-row">
+                        <span>Solar Charge:</span>
+                        <span class="status-value" id="solar-charge">87%</span>
+                    </div>
+                    <div class="status-row">
+                        <span>Water Level:</span>
+                        <span class="status-value" id="water-level">75%</span>
+                    </div>
+                    <div class="status-row">
+                        <span>Temperature:</span>
+                        <span class="status-value" id="temperature">24°C</span>
+                    </div>
+                    <div class="status-row">
+                        <span>WiFi Signal:</span>
+                        <span class="status-value" id="wifi-signal">Strong</span>
+                    </div>
+                    <div class="status-row">
+                        <span>AI Scanner:</span>
+                        <span class="status-value" id="scanner-status">Active</span>
                     </div>
                 </div>
             </div>
-            
-            <div class="device-face left">
-                <div style="writing-mode: vertical-rl; text-orientation: mixed; font-size: 12px; text-align: center;">
-                    VENTILATION
-                </div>
-            </div>
-            
-            <div class="device-face right">
-                <div style="writing-mode: vertical-rl; text-orientation: mixed; font-size: 12px; text-align: center;">
-                    HEAT SINK
-                </div>
-            </div>
-            
-            <div class="device-face top">
-                <div style="display: grid; grid-template-columns: repeat(8, 1fr); gap: 3px; padding: 10px; height: 100%;">
-                    <div style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 3px;"></div>
-                    <div style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 3px;"></div>
-                    <div style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 3px;"></div>
-                    <div style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 3px;"></div>
-                    <div style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 3px;"></div>
-                    <div style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 3px;"></div>
-                    <div style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 3px;"></div>
-                    <div style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 3px;"></div>
-                </div>
-            </div>
-            
-            <div class="device-face bottom">
-                <div style="text-align: center; font-size: 12px;">
-                    <div>⚡ POWER INLET</div>
-                    <div style="margin-top: 10px; font-size: 10px; opacity: 0.8;">
-                        DC 12V-24V Input
-                    </div>
+
+            <div class="control-section">
+                <div class="control-title">⚙️ Quick Actions</div>
+                <div class="button-grid">
+                    <button class="control-button" onclick="runScan()">
+                        🎯 Manual Scan
+                    </button>
+                    <button class="control-button" onclick="checkHealth()">
+                        🔍 System Check
+                    </button>
+                    <button class="control-button" onclick="feedNow()">
+                        🍃 Feed Now
+                    </button>
+                    <button class="control-button" onclick="resetSystem()">
+                        🔄 Reset
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Control Panel -->
-    <div class="control-panel">
-        <div class="panel-title">🌟 System Control</div>
-        
-        <div class="section">
-            <div class="section-title">Core Systems</div>
-            <div class="control-grid">
-                <button class="control-btn active" onclick="toggleSystem('power')" id="btn-power">
-                    ⚡ Power
-                </button>
-                <button class="control-btn active" onclick="toggleSystem('solar')" id="btn-solar">
-                    ☀️ Solar
-                </button>
-                <button class="control-btn active" onclick="toggleSystem('wifi')" id="btn-wifi">
-                    📶 WiFi
-                </button>
-                <button class="control-btn active" onclick="toggleSystem('scan')" id="btn-scan">
-                    🔍 AI Scan
-                </button>
-            </div>
-        </div>
-
-        <div class="section">
-            <div class="section-title">Status Monitor</div>
-            <div class="status-display">
-                <div class="status-row">
-                    <span>System Power</span>
-                    <div class="status-indicator" id="power-status"></div>
-                </div>
-                <div class="status-row">
-                    <span>Solar Charge</span>
-                    <span id="solar-level">87%</span>
-                </div>
-                <div class="status-row">
-                    <span>Water Level</span>
-                    <span id="water-level">75%</span>
-                </div>
-                <div class="status-row">
-                    <span>WiFi Signal</span>
-                    <div class="status-indicator" id="wifi-status"></div>
-                </div>
-                <div class="status-row">
-                    <span>Temperature</span>
-                    <span id="device-temp">24°C</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Info Panel -->
     <div class="info-panel">
-        <div class="panel-title">📊 Device Info</div>
-        <div style="font-size: 12px; line-height: 1.6;">
-            <p><strong>Model:</strong> SolarSmart Pro V3.2</p>
-            <p><strong>Serial:</strong> SS-2025-AI-001</p>
-            <p><strong>Uptime:</strong> <span id="uptime">72h 15m</span></p>
-            <p><strong>Last Scan:</strong> <span id="last-scan">2 min ago</span></p>
-            <p><strong>Energy Today:</strong> <span id="energy-today">24.7 kWh</span></p>
-            <p><strong>Total Scans:</strong> <span id="total-scans">1,247</span></p>
-            <p><strong>Status:</strong> <span style="color: #10b981;" id="overall-status">Operational</span></p>
+        <div style="font-weight: bold; color: #60a5fa; margin-bottom: 10px;">📋 Device Information</div>
+        <div style="font-size: 12px; line-height: 1.4;">
+            <div><strong>Model:</strong> SolarSmart Pro V3.2</div>
+            <div><strong>Serial:</strong> SS-2025-AI-001</div>
+            <div><strong>Uptime:</strong> <span id="uptime">72h 15m</span></div>
+            <div><strong>Energy Today:</strong> <span id="energy">24.7 kWh</span></div>
+            <div><strong>Total Scans:</strong> <span id="total-scans">1,247</span></div>
+            <div><strong>Status:</strong> <span style="color: #10b981;">Operational</span></div>
         </div>
-    </div>
-
-    <!-- Camera Controls -->
-    <div class="camera-controls">
-        <button class="camera-btn" onclick="setView('front')" title="Front View">👁️</button>
-        <button class="camera-btn" onclick="setView('top')" title="Top View">⬆️</button>
-        <button class="camera-btn" onclick="setView('side')" title="Side View">↔️</button>
-        <button class="camera-btn" onclick="setView('iso')" title="Isometric">🎯</button>
-        <button class="camera-btn" onclick="toggleRotation()" title="Pause/Resume" id="rotate-btn">⏸️</button>
     </div>
 
     <script>
@@ -597,170 +394,127 @@
             scan: true
         };
 
-        let isRotating = true;
-
-        // Initialize the system
-        function init() {
-            console.log('✅ System initialized successfully!');
+        // Toggle system function
+        function toggle(system, button) {
+            systems[system] = !systems[system];
             
-            // Hide startup message after 3 seconds
-            setTimeout(() => {
-                const startup = document.getElementById('startup-message');
-                if (startup) {
-                    startup.style.opacity = '0';
-                    setTimeout(() => startup.remove(), 500);
-                }
-            }, 3000);
-
-            // Start data simulation
-            startDataSimulation();
-            
-            showNotification('All systems operational', 'success');
-        }
-
-        // System control functions
-        function toggleSystem(systemName) {
-            systems[systemName] = !systems[systemName];
-            const btn = document.getElementById(`btn-${systemName}`);
-            
-            if (systems[systemName]) {
-                btn.classList.add('active');
-                showNotification(`${systemName.toUpperCase()} activated`, 'success');
+            if (systems[system]) {
+                button.classList.add('active');
+                showMessage(system.toUpperCase() + ' activated');
             } else {
-                btn.classList.remove('active');
-                showNotification(`${systemName.toUpperCase()} deactivated`, 'warning');
+                button.classList.remove('active');
+                showMessage(system.toUpperCase() + ' deactivated');
             }
-
-            updateSystemIndicators();
+            
+            updateStatus();
         }
 
-        function updateSystemIndicators() {
-            const powerStatus = document.getElementById('power-status');
-            const wifiStatus = document.getElementById('wifi-status');
+        // Update status displays
+        function updateStatus() {
+            document.getElementById('power-status').textContent = systems.power ? 'Online' : 'Offline';
+            document.getElementById('wifi-signal').textContent = systems.wifi ? 'Strong' : 'Disconnected';
+            document.getElementById('scanner-status').textContent = systems.scan ? 'Active' : 'Inactive';
+            
+            // Update LEDs
+            document.getElementById('led-power').style.opacity = systems.power ? '1' : '0.3';
+            document.getElementById('led-wifi').style.opacity = systems.wifi ? '1' : '0.3';
+            
+            // Update scanner
             const scanner = document.getElementById('scanner');
-            const ledPower = document.getElementById('led-power');
-            const ledWifi = document.getElementById('led-wifi');
-            const ledSolar = document.getElementById('led-solar');
-            
-            // Update status indicators
-            powerStatus.className = systems.power ? 'status-indicator' : 'status-indicator error';
-            wifiStatus.className = systems.wifi ? 'status-indicator' : 'status-indicator warning';
-
-            // Update visual elements
-            if (scanner) {
-                scanner.style.animationPlayState = systems.scan ? 'running' : 'paused';
-            }
-
-            if (ledPower) {
-                ledPower.style.opacity = systems.power ? '1' : '0.3';
-            }
-
-            if (ledWifi) {
-                ledWifi.style.opacity = systems.wifi ? '1' : '0.3';
-            }
-
-            if (ledSolar) {
-                ledSolar.style.opacity = systems.solar ? '1' : '0.3';
-            }
+            scanner.style.animationPlayState = systems.scan ? 'running' : 'paused';
         }
 
-        // Camera control functions
-        function setView(view) {
-            const device = document.getElementById('device');
-            
-            switch(view) {
-                case 'front':
-                    device.style.transform = 'rotateY(0deg) rotateX(0deg)';
-                    break;
-                case 'top':
-                    device.style.transform = 'rotateY(0deg) rotateX(-90deg)';
-                    break;
-                case 'side':
-                    device.style.transform = 'rotateY(-90deg) rotateX(0deg)';
-                    break;
-                case 'iso':
-                    device.style.transform = 'rotateY(-25deg) rotateX(15deg)';
-                    break;
-            }
-            
-            // Pause rotation temporarily
-            device.style.animation = 'none';
+        // Action functions
+        function runScan() {
+            showMessage('Manual scan initiated');
+            // Add visual feedback
+            const scanner = document.getElementById('scanner');
+            scanner.style.borderColor = '#ff6b6b';
             setTimeout(() => {
-                if (isRotating) {
-                    device.style.animation = 'rotate 10s linear infinite';
-                }
-            }, 1000);
-            
-            showNotification(`Switched to ${view} view`, 'success');
+                scanner.style.borderColor = '#00ff88';
+                showMessage('Scan completed - Object detected');
+            }, 2000);
         }
 
-        function toggleRotation() {
-            const device = document.getElementById('device');
-            const btn = document.getElementById('rotate-btn');
-            
-            isRotating = !isRotating;
-            
-            if (isRotating) {
-                device.classList.remove('paused');
-                btn.textContent = '⏸️';
-                btn.title = 'Pause Rotation';
-                showNotification('Auto-rotation enabled', 'success');
-            } else {
-                device.classList.add('paused');
-                btn.textContent = '▶️';
-                btn.title = 'Resume Rotation';
-                showNotification('Auto-rotation paused', 'warning');
-            }
+        function checkHealth() {
+            showMessage('Running system diagnostics...');
+            setTimeout(() => {
+                showMessage('All systems healthy ✅');
+            }, 1500);
         }
 
-        function showNotification(message, type = 'success') {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.className = `notification ${type} show`;
+        function feedNow() {
+            showMessage('Feeding cycle activated');
+            const feeder = document.querySelector('.feeder');
+            feeder.style.backgroundColor = '#10b981';
+            setTimeout(() => {
+                feeder.style.backgroundColor = '#f97316';
+                showMessage('Feeding complete');
+            }, 2000);
+        }
+
+        function resetSystem() {
+            showMessage('System reset initiated...');
+            setTimeout(() => {
+                showMessage('System reset complete ✅');
+                // Reset all systems to active
+                systems = { power: true, solar: true, wifi: true, scan: true };
+                document.querySelectorAll('.control-button').forEach(btn => {
+                    if (btn.textContent.includes('Power') || btn.textContent.includes('Solar') || 
+                        btn.textContent.includes('WiFi') || btn.textContent.includes('AI Scan')) {
+                        btn.classList.add('active');
+                    }
+                });
+                updateStatus();
+            }, 2000);
+        }
+
+        // Show message function
+        function showMessage(message) {
+            const msgDiv = document.querySelector('.success-message');
+            msgDiv.textContent = message;
+            msgDiv.style.display = 'block';
             
             setTimeout(() => {
-                notification.classList.remove('show');
+                msgDiv.style.display = 'none';
             }, 3000);
         }
 
-        function startDataSimulation() {
-            // Update values every 2 seconds
-            setInterval(() => {
-                const solarLevel = 85 + Math.random() * 10;
-                const waterLevel = 70 + Math.random() * 15;
-                const temp = 22 + Math.random() * 6;
-                
-                document.getElementById('solar-level').textContent = Math.round(solarLevel) + '%';
-                document.getElementById('water-level').textContent = Math.round(waterLevel) + '%';
-                document.getElementById('device-temp').textContent = Math.round(temp) + '°C';
-                
-            }, 2000);
-
-            // Update time displays every 5 seconds
-            setInterval(() => {
-                const hours = 72 + Math.floor(Math.random() * 5);
-                const minutes = Math.floor(Math.random() * 60);
-                document.getElementById('uptime').textContent = `${hours}h ${minutes}m`;
-                
-                const scans = 1200 + Math.floor(Math.random() * 100);
-                document.getElementById('total-scans').textContent = scans.toLocaleString();
-                
-                const energy = (20 + Math.random() * 10).toFixed(1);
-                document.getElementById('energy-today').textContent = energy + ' kWh';
-                
-                // Random last scan time
-                const scanTimes = ['just now', '1 min ago', '2 min ago', '3 min ago'];
-                const randomTime = scanTimes[Math.floor(Math.random() * scanTimes.length)];
-                document.getElementById('last-scan').textContent = randomTime;
-                
-            }, 5000);
+        // Simulate live data updates
+        function updateLiveData() {
+            // Update random values
+            const solar = 85 + Math.random() * 10;
+            const water = 70 + Math.random() * 15;
+            const temp = 22 + Math.random() * 6;
+            
+            document.getElementById('solar-charge').textContent = Math.round(solar) + '%';
+            document.getElementById('water-level').textContent = Math.round(water) + '%';
+            document.getElementById('temperature').textContent = Math.round(temp) + '°C';
+            
+            // Update uptime
+            const hours = 72 + Math.floor(Math.random() * 5);
+            const minutes = Math.floor(Math.random() * 60);
+            document.getElementById('uptime').textContent = hours + 'h ' + minutes + 'm';
+            
+            // Update energy
+            const energy = (20 + Math.random() * 10).toFixed(1);
+            document.getElementById('energy').textContent = energy + ' kWh';
+            
+            // Update scans
+            const scans = 1200 + Math.floor(Math.random() * 100);
+            document.getElementById('total-scans').textContent = scans.toLocaleString();
         }
 
-        // Initialize when page loads
-        window.addEventListener('load', init);
+        // Start live data updates
+        setInterval(updateLiveData, 3000);
+
+        // Initialize
+        updateStatus();
         
-        // Backup initialization
-        setTimeout(init, 100);
+        // Hide initial success message after 4 seconds
+        setTimeout(() => {
+            document.querySelector('.success-message').style.display = 'none';
+        }, 4000);
 
         console.log('✅ Solar Device System Ready!');
     </script>
