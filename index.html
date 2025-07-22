@@ -66,7 +66,7 @@
 
         .device {
             width: 400px;
-            height: 280px;
+            height: 320px;
             background: linear-gradient(145deg, #f1f5f9, #e2e8f0, #cbd5e1);
             border-radius: 20px;
             position: relative;
@@ -333,6 +333,143 @@
             box-shadow: 
                 0 8px 20px rgba(249, 115, 22, 0.6),
                 inset 0 1px 3px rgba(255,255,255,0.2);
+        }
+
+        /* NEW: Pet entrance/door - ACTUAL OPENING */
+        .pet-entrance {
+            position: absolute;
+            bottom: 10px;
+            left: 25px;
+            width: 90px;
+            height: 80px;
+            background: linear-gradient(145deg, #374151, #4b5563, #6b7280);
+            border-radius: 20px 20px 0 0;
+            border: 3px solid #1f2937;
+            border-bottom: none;
+            box-shadow: 
+                inset 0 4px 8px rgba(0,0,0,0.3),
+                0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            position: relative;
+            overflow: visible;
+        }
+
+        .pet-entrance::before {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 15px;
+            right: 15px;
+            height: 8px;
+            background: linear-gradient(145deg, #1f2937, #111827);
+            border-radius: 0 0 10px 10px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .pet-door {
+            width: 60px;
+            height: 55px;
+            background: linear-gradient(180deg, #000000, #111827, #000000);
+            border-radius: 15px 15px 0 0;
+            border: 2px solid #374151;
+            border-bottom: none;
+            position: relative;
+            box-shadow: 
+                inset 0 4px 12px rgba(0,0,0,0.8),
+                inset 0 0 20px rgba(0,0,0,0.6);
+            transition: all 0.3s ease;
+            margin-bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* Create the actual opening/tunnel effect */
+        .pet-door::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at center top, 
+                    rgba(0,0,0,0.9) 0%, 
+                    rgba(0,0,0,0.7) 40%, 
+                    rgba(0,0,0,0.9) 100%);
+            border-radius: 10px 10px 0 0;
+            box-shadow: 
+                inset 0 2px 8px rgba(0,0,0,0.9),
+                inset 0 -2px 4px rgba(255,255,255,0.1);
+        }
+
+        /* Pet icon overlay */
+        .pet-door::after {
+            content: '🐕';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 18px;
+            opacity: 0.6;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .pet-door.open {
+            background: linear-gradient(180deg, #22c55e, #16a34a, #15803d);
+            border-color: #15803d;
+            box-shadow: 
+                inset 0 4px 12px rgba(0,0,0,0.6),
+                0 0 20px rgba(34, 197, 94, 0.6);
+        }
+
+        .pet-door.open::before {
+            background: 
+                radial-gradient(ellipse at center top, 
+                    rgba(34, 197, 94, 0.3) 0%, 
+                    rgba(0,0,0,0.5) 40%, 
+                    rgba(34, 197, 94, 0.2) 100%);
+            box-shadow: 
+                inset 0 2px 8px rgba(34, 197, 94, 0.4),
+                inset 0 -2px 4px rgba(255,255,255,0.2);
+        }
+
+        .pet-door.open::after {
+            content: '✅';
+            opacity: 1;
+            color: white;
+            font-size: 16px;
+        }
+
+        .pet-entrance-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 9px;
+            color: #9ca3af;
+            text-align: center;
+            white-space: nowrap;
+            font-weight: bold;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+
+        /* Add some ground/base effect */
+        .pet-entrance-base {
+            position: absolute;
+            bottom: -8px;
+            left: 10px;
+            right: 10px;
+            height: 6px;
+            background: linear-gradient(145deg, #1f2937, #111827);
+            border-radius: 0 0 8px 8px;
+            box-shadow: 
+                0 2px 4px rgba(0,0,0,0.3),
+                inset 0 1px 2px rgba(255,255,255,0.1);
         }
 
         .device-label {
@@ -678,11 +815,18 @@
                     <div class="led led-status" id="led-status" title="System Status"></div>
                 </div>
                 
+                <!-- NEW: Pet Entrance with Base -->
+                <div class="pet-entrance">
+                    <div class="pet-door" id="pet-door" onclick="togglePetDoor()"></div>
+                    <div class="pet-entrance-base"></div>
+                    <div class="pet-entrance-label">PET ENTRY TUNNEL</div>
+                </div>
+                
                 <!-- Enhanced Feeder -->
                 <div class="feeder" id="feeder" onclick="feedNow()" title="Smart Feeder">🥄</div>
                 
                 <!-- Device Label -->
-                <div class="device-label">SMART ENTRY SYSTEM</div>
+                <div class="device-label">SMART PET ENTRY SYSTEM</div>
             </div>
         </div>
 
@@ -707,6 +851,13 @@
                     </button>
                     <button class="control-button" onclick="toggleSystem('security', this)">
                         🔒 Security Mode
+                    </button>
+                </div>
+                
+                <!-- NEW: Pet Door Control Button -->
+                <div style="margin-top: 15px;">
+                    <button class="control-button" onclick="togglePetDoor()" style="width: 100%;">
+                        🚪 Pet Door Control
                     </button>
                 </div>
             </div>
@@ -743,6 +894,11 @@
                     <div class="status-row">
                         <span>AI Scanner:</span>
                         <span class="status-value online" id="scanner-status">Active</span>
+                    </div>
+                    <!-- NEW: Pet Door Status -->
+                    <div class="status-row">
+                        <span>Pet Door:</span>
+                        <span class="status-value warning" id="pet-door-status">Closed</span>
                     </div>
                 </div>
             </div>
@@ -786,12 +942,13 @@
     <div class="info-panel">
         <div class="info-title">📋 Device Information</div>
         <div class="info-content">
-            <div><strong>Model:</strong> <span>SolarSmart Pro V3.2</span></div>
-            <div><strong>Serial:</strong> <span>SS-2025-AI-001</span></div>
+            <div><strong>Model:</strong> <span>SolarSmart Pet Pro V2.1</span></div>
+            <div><strong>Serial:</strong> <span>SS-2025-PET-001</span></div>
             <div><strong>Firmware:</strong> <span>v2.1.4-stable</span></div>
             <div><strong>Uptime:</strong> <span id="uptime">74h 13m</span></div>
             <div><strong>Energy Today:</strong> <span id="energy">23.6 kWh</span></div>
             <div><strong>Total Scans:</strong> <span id="total-scans">1,296</span></div>
+            <div><strong>Pet Entries:</strong> <span id="pet-entries">47</span></div>
             <div><strong>CPU Usage:</strong> <span id="cpu-usage">23%</span></div>
             <div><strong>Memory:</strong> <span id="memory-usage">64%</span></div>
             <div><strong>Status:</strong> <span class="online">Operational</span></div>
@@ -799,7 +956,7 @@
     </div>
 
     <script>
-        console.log('Advanced Solar Device System v2.0 Starting...');
+        console.log('Advanced Solar Pet Device System v2.0 Starting...');
         
         // Enhanced system states
         let systems = {
@@ -814,6 +971,7 @@
         let deviceMode = 'normal';
         let scanSensitivity = 7;
         let powerMode = 2;
+        let petDoorOpen = false;
 
         // Enhanced toggle system function
         function toggleSystem(system, button) {
@@ -828,6 +986,25 @@
             }
             
             updateSystemStatus();
+        }
+
+        // NEW: Toggle pet door function
+        function togglePetDoor() {
+            petDoorOpen = !petDoorOpen;
+            const petDoor = document.getElementById('pet-door');
+            const petDoorStatus = document.getElementById('pet-door-status');
+            
+            if (petDoorOpen) {
+                petDoor.classList.add('open');
+                petDoorStatus.textContent = 'Open';
+                petDoorStatus.className = 'status-value online';
+                showNotification('🚪 Pet door opened - Welcome!', 'success');
+            } else {
+                petDoor.classList.remove('open');
+                petDoorStatus.textContent = 'Closed';
+                petDoorStatus.className = 'status-value warning';
+                showNotification('🚪 Pet door closed - Secured', 'warning');
+            }
         }
 
         // Update all system status displays
@@ -853,3 +1030,194 @@
             const scanner = document.getElementById('scanner');
             scanner.style.animationPlayState = systems.scan ? 'running' : 'paused';
         }
+
+        // Enhanced notification system
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notification-text');
+            
+            notificationText.textContent = message;
+            notification.className = 'notification ' + type;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+
+        function closeNotification() {
+            document.getElementById('notification').classList.remove('show');
+        }
+
+        // Advanced control functions
+        function runAdvancedScan() {
+            showNotification('🎯 Deep scan initiated - Detecting pets...', 'success');
+            setTimeout(() => {
+                showNotification('✅ Deep scan completed - 2 pets detected nearby', 'success');
+            }, 3000);
+        }
+
+        function optimizePerformance() {
+            showNotification('⚡ Auto optimization in progress...', 'success');
+            
+            // Simulate optimization
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    showNotification('✅ Performance optimized - Pet detection +15%', 'success');
+                }
+            }, 200);
+        }
+
+        function emergencyMode() {
+            showNotification('🚨 Emergency mode activated!', 'warning');
+            deviceMode = 'emergency';
+            
+            // Automatically close pet door in emergency
+            if (petDoorOpen) {
+                togglePetDoor();
+            }
+            
+            // Visual effects for emergency mode
+            const device = document.getElementById('device');
+            device.style.animation = 'pulse 1s ease-in-out infinite';
+            
+            setTimeout(() => {
+                device.style.animation = '';
+                deviceMode = 'normal';
+                showNotification('✅ Emergency mode deactivated', 'success');
+            }, 5000);
+        }
+
+        function runDiagnostics() {
+            showNotification('🔍 Running full system diagnostics...', 'success');
+            
+            setTimeout(() => {
+                showNotification('✅ Diagnostics complete - Pet door: OK, Feeder: OK', 'success');
+            }, 4000);
+        }
+
+        function feedNow() {
+            showNotification('🥄 Feeding cycle initiated', 'success');
+            
+            // Animate feeder
+            const feeder = document.getElementById('feeder');
+            feeder.style.transform = 'translateY(-5px) scale(1.1) rotate(15deg)';
+            
+            setTimeout(() => {
+                feeder.style.transform = '';
+                showNotification('✅ Feeding cycle completed - 50g dispensed', 'success');
+            }, 1000);
+        }
+
+        // Slider controls
+        function updateSensitivity(value) {
+            scanSensitivity = value;
+            document.getElementById('sensitivity-value').textContent = value;
+            showNotification(`Pet detection sensitivity set to ${value}`, 'success');
+        }
+
+        function updatePowerMode(value) {
+            powerMode = value;
+            const modes = ['Eco', 'Balanced', 'Performance'];
+            const modeName = modes[value - 1];
+            document.getElementById('power-mode-value').textContent = modeName;
+            showNotification(`Power mode set to ${modeName}`, 'success');
+        }
+
+        // Simulate dynamic data updates
+        function updateDynamicData() {
+            // Update solar efficiency
+            const efficiency = 90 + Math.random() * 10;
+            document.getElementById('solar-charge').textContent = efficiency.toFixed(0) + '%';
+            document.getElementById('solar-progress').style.width = efficiency + '%';
+            
+            // Update water level
+            const waterLevel = 80 + Math.random() * 15;
+            document.getElementById('water-level').textContent = waterLevel.toFixed(0) + '%';
+            document.getElementById('water-progress').style.width = waterLevel + '%';
+            
+            // Update temperature
+            const temp = 24 + Math.random() * 6;
+            document.getElementById('temperature').textContent = temp.toFixed(1) + '°C';
+            
+            // Update CPU usage
+            const cpu = 20 + Math.random() * 30;
+            document.getElementById('cpu-usage').textContent = cpu.toFixed(0) + '%';
+            
+            // Update memory usage
+            const memory = 60 + Math.random() * 20;
+            document.getElementById('memory-usage').textContent = memory.toFixed(0) + '%';
+            
+            // Update pet entries count occasionally
+            if (Math.random() < 0.1) {
+                const currentEntries = parseInt(document.getElementById('pet-entries').textContent);
+                document.getElementById('pet-entries').textContent = currentEntries + 1;
+            }
+        }
+
+        // Initialize system
+        document.addEventListener('DOMContentLoaded', () => {
+            showNotification('🌟 Advanced Solar Pet Device System v2.0 Online!', 'success');
+            updateSystemStatus();
+            
+            // Start dynamic data updates
+            setInterval(updateDynamicData, 5000);
+            
+            // Initial data update
+            updateDynamicData();
+        });
+
+        // Add device interaction effects
+        document.getElementById('device').addEventListener('mouseenter', () => {
+            if (systems.power) {
+                showNotification('🐕 Pet device status: Ready for furry friends!', 'success');
+            }
+        });
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case '1':
+                    document.querySelector('[onclick*="power"]').click();
+                    break;
+                case '2':
+                    document.querySelector('[onclick*="solar"]').click();
+                    break;
+                case '3':
+                    document.querySelector('[onclick*="wifi"]').click();
+                    break;
+                case '4':
+                    document.querySelector('[onclick*="scan"]').click();
+                    break;
+                case 'f':
+                case 'F':
+                    feedNow();
+                    break;
+                case 'd':
+                case 'D':
+                    togglePetDoor();
+                    break;
+            }
+        });
+
+        // Add CSS pulse animation for emergency mode
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0%, 100% { 
+                    transform: perspective(1000px) rotateX(5deg) rotateY(-5deg) scale(1);
+                    filter: brightness(1);
+                }
+                50% { 
+                    transform: perspective(1000px) rotateX(5deg) rotateY(-5deg) scale(1.02);
+                    filter: brightness(1.2) hue-rotate(10deg);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
