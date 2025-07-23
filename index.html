@@ -335,11 +335,10 @@
                 inset 0 1px 3px rgba(255,255,255,0.2);
         }
 
-        /* NEW: Pet entrance/door - ACTUAL OPENING */
         .pet-entrance {
             position: absolute;
-            bottom: 10px;
-            left: 25px;
+            top: 50px;
+            right: 100px;
             width: 90px;
             height: 80px;
             background: linear-gradient(145deg, #374151, #4b5563, #6b7280);
@@ -387,7 +386,6 @@
             cursor: pointer;
         }
 
-        /* Create the actual opening/tunnel effect */
         .pet-door::before {
             content: '';
             position: absolute;
@@ -406,7 +404,6 @@
                 inset 0 -2px 4px rgba(255,255,255,0.1);
         }
 
-        /* Pet icon overlay */
         .pet-door::after {
             content: '🐕';
             position: absolute;
@@ -458,7 +455,6 @@
             text-shadow: 0 1px 2px rgba(0,0,0,0.5);
         }
 
-        /* Add some ground/base effect */
         .pet-entrance-base {
             position: absolute;
             bottom: -8px;
